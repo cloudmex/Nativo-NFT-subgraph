@@ -1,0 +1,51 @@
+type Market @entity { 
+  id: ID!
+  contractCount: BigInt!
+  contracts: [String!]!
+}
+
+type Contract @entity {
+  id: ID!
+  owner: String!
+  contractID: String!
+  tokenCount: BigInt!
+  collectionCount: BigInt!
+  factory: String! 
+  collections: [String!]!
+}
+
+type Collection @entity {
+  id: ID!
+  contract: String!
+  owner: String!
+  title: String!
+  description: String!
+  tokenCount: BigInt!
+  saleCount: BigInt!
+  saleVolume: BigDecimal!
+  mediaIcon: String!
+  mediaBanner: String!
+  collectionID: BigInt!
+  tokens: [String!]!
+}
+
+type Token @entity {
+  id: ID!
+  collection: String!
+  collectionID: BigInt!
+  contract: String!
+  tokenId: BigInt!
+  owner_id: String!
+  title: String!
+  description: String!
+  media: String!
+  creator: String!
+  price: BigInt!
+  status: String!
+  adressbidder: String!
+  highestbidder: String!
+  lowestbidder: String!
+  expires_at: String!
+  starts_at: String!
+  extra: String!
+}
