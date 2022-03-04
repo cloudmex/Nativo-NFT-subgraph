@@ -1,0 +1,14 @@
+//Inicializar el subgrafo
+graph init --product hosted-service LuisDaniel2166/NativoJSON
+
+//Instalar paqueteria necesaria
+yarn install
+
+//Generar esquema de las estructuras del subgrafo
+yarn codegen
+
+//Inicio de sesion de subgraph para hacer el deploy
+graph auth --product hosted-service a5e3fcc5e7264a6cbd6e3cec12183acf
+
+//Comando para realizar el deploy al subgrafo
+graph deploy --product hosted-service LuisDaniel2166/NativoJSON

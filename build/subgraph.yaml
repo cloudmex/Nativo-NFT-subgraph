@@ -6,8 +6,8 @@ dataSources:
     name: NativoTest
     network: near-testnet
     source:
-      account: dev-1646324960363-24989034737776
-      startBlock: 84131962
+      account: dev-1646411413558-23589508762199
+      startBlock: 84196684
     mapping:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
