@@ -72,7 +72,7 @@ function handleAction(
       }
     }
     //let data = outcome.logs[0].split(',')
-    let collection = new Collection(colID+'-'+contAdd+'-'+title)//collectionID-contractID-Nombre_de_coleccion
+    let collection = new Collection(colID+'-'+contAdd)//collectionID-contractID-owner
     let contract = Contract.load(contAdd)
     if(contract == null){
       contract = new Contract(contAdd)
@@ -94,7 +94,7 @@ function handleAction(
     collection.collectionID = BigInt.fromString(colID)
     collection.tokens = []
     contract.collectionCount = contract.collectionCount + BigInt.fromI32(1)
-    contract.collections.push(colID+'-'+contAdd+'-'+title)
+    contract.collections.push(colID+'-'+contAdd)
     contract.save()
     collection.save()
     log.info('se guardo la coleccion',[])
@@ -183,12 +183,12 @@ function handleAction(
       }
     }
     log.info("Log: {}",[outcome.logs[0]])
-    let token = new Token(tokID + '-' + creator + '-' + colName);//tokenId-Creator-Collection
-    let collection= Collection.load(colID+'-'+contAdd+'-'+colName)
+    let token = new Token(tokID + '-' + creator + '-' + contAdd);//tokenId-Creator-Collection
+    let collection= Collection.load(colID+'-'+contAdd)
     let contract = Contract.load(contAdd)
     if(collection == null) {
       log.info("No se encontro la coleccion", [])
-      collection = new Collection(colID+'-'+contAdd+'-'+colName)
+      collection = new Collection(colID+'-'+contAdd)
       collection.title = colName
       collection.tokenCount = BigInt.fromI32(0)
       collection.saleCount = BigInt.fromI32(0)
@@ -206,7 +206,7 @@ function handleAction(
       contract.tokenCount = BigInt.fromI32(0)
       contract.collectionCount = BigInt.fromI32(1)
       contract.collections = []
-      contract.collections.push(colID+'-'+contAdd+'-'+colName)
+      contract.collections.push(colID+'-'+contAdd)
     }
     token.collection = colName
     token.collectionID = BigInt.fromString(colID)
@@ -225,7 +225,7 @@ function handleAction(
     token.expires_at = expires;
     token.starts_at = starts;
     token.extra = extra;
-    collection.tokens.push(tokID + '-' + creator + '-' + colName)
+    collection.tokens.push(tokID + '-' + creator + '-' + contAdd)
     collection.tokenCount = collection.tokenCount + BigInt.fromI32(1);
     contract.tokenCount = contract.tokenCount + BigInt.fromI32(1);
     contract.save()
@@ -317,11 +317,11 @@ function handleAction(
       }
     }
     log.info("Log: {}",[outcome.logs[0]])
-    let token = Token.load(tokID + '-' + creator + '-' + colName)
-    let collection= Collection.load(colID+'-'+contAdd+'-'+colName)
+    let token = Token.load(tokID + '-' + creator + '-' + contAdd)
+    let collection= Collection.load(colID+'-'+contAdd)
     if(token == null){
       log.info("No se encontro el token",[])
-      token = new Token(tokID + '-' + creator + '-' + colName)
+      token = new Token(tokID + '-' + creator + '-' + contAdd)
       token.collection = colName
       token.collectionID = BigInt.fromString(colID)
       token.contract = contAdd
@@ -342,7 +342,7 @@ function handleAction(
     }
     if(collection == null) {
       log.info("No se encontro la coleccion", [])
-      collection = new Collection(colID+'-'+contAdd+'-'+colName)
+      collection = new Collection(colID+'-'+contAdd)
       collection.title = title
       collection.tokenCount = BigInt.fromI32(0)
       collection.saleCount = BigInt.fromI32(0)
@@ -444,10 +444,10 @@ function handleAction(
       }
     }
     log.info("Log: {}",[outcome.logs[0]])
-    let token = Token.load(tokID + '-' + creator + '-' + colName)
+    let token = Token.load(tokID + '-' + creator + '-' + contAdd)
     if(token==null){
       log.info("No se encontro el token",[])
-      token = new Token(tokID + '-' + creator + '-' + colName)
+      token = new Token(tokID + '-' + creator + '-' + contAdd)
       token.collection = colName
       token.collectionID = BigInt.fromString(colID)
       token.contract = contAdd
@@ -554,10 +554,10 @@ function handleAction(
       }
     }
     log.info("Log: {}",[outcome.logs[0]])
-    let token = Token.load(tokID + '-' + creator + '-' + colName)
+    let token = Token.load(tokID + '-' + creator + '-' + contAdd)
     if(token==null){
       log.info("No se encontro el token",[])
-      token = new Token(tokID + '-' + creator + '-' + colName)
+      token = new Token(tokID + '-' + creator + '-' + contAdd)
       token.collection = colName
       token.collectionID = BigInt.fromString(colID)
       token.contract = contAdd
