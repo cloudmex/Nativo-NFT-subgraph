@@ -1,5 +1,5 @@
 import { near, BigInt, log, BigDecimal, json, JSONValueKind, bigInt } from "@graphprotocol/graph-ts"
-import { Collection, Contract, Market, Token } from "../generated/schema"
+import { Collection, Contract, Market, Token, Offer } from "../generated/schema"
 
 export function handleReceipt(receipt: near.ReceiptWithOutcome): void {
   const actions = receipt.receipt.actions;
@@ -580,5 +580,236 @@ function handleAction(
     token.price = BigInt.fromString(price)
     token.save()
     log.info("se puso a la venta un NFT",[])
+  }
+
+  if (functionCall.methodName == "save_bid_ttg"){
+    log.info("Entro en ofertar", [])
+    let jsonData = outcome.logs[0]
+    let parsedJSON = json.fromString(jsonData)
+    let contAdd = ""
+    let colName = ""
+    let colID = ""
+    let tokID = ""
+    let owner = ""
+    let title = ""
+    let desc = ""
+    let media = ""
+    let creator = ""
+    let price = ""
+    let status = ""
+    let addBid = ""
+    let highBid = ""
+    let lowBid = ""
+    let expires = ""
+    let starts = ""
+    let extra = ""
+    if(parsedJSON.kind == JSONValueKind.OBJECT){
+      let entry = parsedJSON.toObject()
+      for(let i = 0;i < entry.entries.length; i++){
+        let key = entry.entries[i].key.toString()
+        let value = entry.entries[i].value.toString()
+        log.info('key:{} value:{}',[key,value])
+        switch(true){
+          case key == 'contract_name':
+            contAdd = value
+            break
+          case key == 'collection':
+            colName = value
+            break
+          case key == 'collection_id':
+            colID = value
+            break
+          case key == 'token_id':
+            tokID = value
+            break
+          case key == 'owner_id':
+            owner = value
+            break
+          case key == 'title':
+            title = value
+            break
+          case key == 'description':
+            desc = value
+            break
+          case key == 'media':
+            media = value
+            break
+          case key == 'creator':
+            creator = value
+            break
+          case key == 'price':
+            price = value
+            break
+          case key == 'status':
+            status = value
+            break
+          case key == 'adressbidder':
+            addBid = value
+            break
+          case key == 'highestbid':
+            highBid = value
+            break
+          case key == 'lowestbid':
+            lowBid = value
+            break
+          case key == 'expires_at':
+            expires = value
+            break
+          case key == 'starts_at':
+            starts = value
+            break
+          case key == 'extra':
+            extra = value
+            break
+        }
+      }
+    }
+    log.info("Log: {}",[outcome.logs[0]])
+    let token = Token.load(tokID + '-' + creator + '-' + contAdd)
+    if(token==null){
+      log.info("No se encontro el token",[])
+      token = new Token(tokID + '-' + creator + '-' + contAdd)
+      token.collection = colName
+      token.collectionID = BigInt.fromString(colID)
+      token.contract = contAdd
+      token.tokenId = BigInt.fromString(tokID);
+      token.owner_id = owner;
+      token.title = title;
+      token.description = desc;
+      token.media = media;
+      token.creator = creator;
+      token.price = BigInt.fromString(price);
+      token.status = status;
+      token.adressbidder = addBid;
+      token.highestbidder = highBid;
+      token.lowestbidder = lowBid;
+      token.expires_at = expires;
+      token.starts_at = starts;
+      token.extra = extra;
+    }
+    let offer = new Offer(lowBid+'-'+tokID+'-'+contAdd)//OfferId-tokenId-Contract
+    offer.contract = contAdd
+    offer.tokenId = BigInt.fromString(tokID)
+    offer.owner_id = addBid
+    offer.price = BigInt.fromString(highBid)
+    offer.offerID = BigInt.fromString(lowBid)
+    token.adressbidder = addBid
+    token.highestbidder = highBid
+    token.lowestbidder = lowBid
+    token.save()
+    offer.save()
+    log.info('Se realizo una oferta',[])
+  }
+  if (functionCall.methodName == "save_close_bid_ttg"){
+    log.info("Entro en cerrar oferta", [])
+    let jsonData = outcome.logs[0]
+    let parsedJSON = json.fromString(jsonData)
+    let contAdd = ""
+    let colName = ""
+    let colID = ""
+    let tokID = ""
+    let owner = ""
+    let title = ""
+    let desc = ""
+    let media = ""
+    let creator = ""
+    let price = ""
+    let status = ""
+    let addBid = ""
+    let highBid = ""
+    let lowBid = ""
+    let expires = ""
+    let starts = ""
+    let extra = ""
+    if(parsedJSON.kind == JSONValueKind.OBJECT){
+      let entry = parsedJSON.toObject()
+      for(let i = 0;i < entry.entries.length; i++){
+        let key = entry.entries[i].key.toString()
+        let value = entry.entries[i].value.toString()
+        log.info('key:{} value:{}',[key,value])
+        switch(true){
+          case key == 'contract_name':
+            contAdd = value
+            break
+          case key == 'collection':
+            colName = value
+            break
+          case key == 'collection_id':
+            colID = value
+            break
+          case key == 'token_id':
+            tokID = value
+            break
+          case key == 'owner_id':
+            owner = value
+            break
+          case key == 'title':
+            title = value
+            break
+          case key == 'description':
+            desc = value
+            break
+          case key == 'media':
+            media = value
+            break
+          case key == 'creator':
+            creator = value
+            break
+          case key == 'price':
+            price = value
+            break
+          case key == 'status':
+            status = value
+            break
+          case key == 'adressbidder':
+            addBid = value
+            break
+          case key == 'highestbid':
+            highBid = value
+            break
+          case key == 'lowestbid':
+            lowBid = value
+            break
+          case key == 'expires_at':
+            expires = value
+            break
+          case key == 'starts_at':
+            starts = value
+            break
+          case key == 'extra':
+            extra = value
+            break
+        }
+      }
+    }
+    log.info("Log: {}",[outcome.logs[0]])
+    let token = Token.load(tokID + '-' + creator + '-' + contAdd)
+    if(token==null){
+      log.info("No se encontro el token",[])
+      token = new Token(tokID + '-' + creator + '-' + contAdd)
+      token.collection = colName
+      token.collectionID = BigInt.fromString(colID)
+      token.contract = contAdd
+      token.tokenId = BigInt.fromString(tokID);
+      token.owner_id = owner;
+      token.title = title;
+      token.description = desc;
+      token.media = media;
+      token.creator = creator;
+      token.price = BigInt.fromString(price);
+      token.status = status;
+      token.adressbidder = addBid;
+      token.highestbidder = highBid;
+      token.lowestbidder = lowBid;
+      token.expires_at = expires;
+      token.starts_at = starts;
+      token.extra = extra;
+    }
+    token.adressbidder = addBid
+    token.highestbidder = highBid
+    token.lowestbidder = lowBid
+    token.status = status
+    token.save()
+    log.info("Se cerrola oferta", [])
   }
 }
