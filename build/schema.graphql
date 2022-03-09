@@ -49,3 +49,13 @@ type Token @entity {
   starts_at: String!
   extra: String!
 }
+
+type Offer @entity {
+  id: ID!
+  offerID: BigInt!
+  tokenId: BigInt!
+  contract: String!
+  owner_id: String!
+  price: BigInt!
+  collectionID: BigInt!
+}

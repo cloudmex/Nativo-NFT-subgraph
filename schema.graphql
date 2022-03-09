@@ -57,4 +57,5 @@ type Offer @entity {
   contract: String!
   owner_id: String!
   price: BigInt!
+  collectionID: BigInt!
 }

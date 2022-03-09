@@ -1,5 +1,5 @@
 //Inicializar el subgrafo
-graph init --product hosted-service LuisDaniel2166/NativoJSON
+graph init --product hosted-service LuisDaniel2166/NativoOffers
 
 //Instalar paqueteria necesaria
 yarn install
@@ -11,4 +11,4 @@ yarn codegen
 graph auth --product hosted-service a5e3fcc5e7264a6cbd6e3cec12183acf
 
 //Comando para realizar el deploy al subgrafo
-graph deploy --product hosted-service LuisDaniel2166/NativoJSON
+graph deploy --product hosted-service LuisDaniel2166/NativoOffers

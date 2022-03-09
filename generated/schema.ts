@@ -517,6 +517,7 @@ export class Offer extends Entity {
     this.set("contract", Value.fromString(""));
     this.set("owner_id", Value.fromString(""));
     this.set("price", Value.fromBigInt(BigInt.zero()));
+    this.set("collectionID", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -588,5 +589,14 @@ export class Offer extends Entity {
 
   set price(value: BigInt) {
     this.set("price", Value.fromBigInt(value));
+  }
+
+  get collectionID(): BigInt {
+    let value = this.get("collectionID");
+    return value!.toBigInt();
+  }
+
+  set collectionID(value: BigInt) {
+    this.set("collectionID", Value.fromBigInt(value));
   }
 }

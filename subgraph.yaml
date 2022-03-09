@@ -3,11 +3,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: near
-    name: NativoTest
+    name: NativoOffers
     network: near-testnet
     source:
-      account: "dev-1646411413558-23589508762199"
-      startBlock: 84196684
+      account: "dev-1646849438147-13783661084395"
+      startBlock: 84584364
     mapping:
       apiVersion: 0.0.5
       language: wasm/assemblyscript

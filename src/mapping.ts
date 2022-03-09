@@ -693,6 +693,7 @@ function handleAction(
     offer.owner_id = addBid
     offer.price = BigInt.fromString(highBid)
     offer.offerID = BigInt.fromString(lowBid)
+    offer.collectionID = BigInt.fromString(colID)
     token.adressbidder = addBid
     token.highestbidder = highBid
     token.lowestbidder = lowBid
@@ -810,6 +811,6 @@ function handleAction(
     token.lowestbidder = lowBid
     token.status = status
     token.save()
-    log.info("Se cerrola oferta", [])
+    log.info("Se cerro la oferta", [])
   }
 }
