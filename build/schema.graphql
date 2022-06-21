@@ -1,38 +1,48 @@
-type Market @entity { 
+type Profile @entity{
   id: ID!
-  contractCount: BigInt!
-  contracts: [String!]!
+  username: String!
+  media: String!
+  biography: String!
+  tokCreated: BigInt!
+  tokBought: BigInt!
+  socialMedia: String!
+  timestamp: BigInt!
 }
 
-type Contract @entity {
-  id: ID!
-  owner: String!
-  contractID: String!
-  tokenCount: BigInt!
-  collectionCount: BigInt!
-  factory: String! 
-  collections: [String!]!
-}
-
-type Collection @entity {
+type Market @entity{
   id: ID!
   contract: String!
-  owner: String!
-  title: String!
-  description: String!
+  salesCount: BigInt!
+  onSaleCount: BigInt!
+  saleVolume: BigInt!
+}
+
+type Bid @entity {
+  id: ID!
+  contract: String!
+  tokenId: BigInt!
+  bidder: String!
+  price: BigInt!
+  status: String!
+  timestamp: BigInt!
+}
+
+type Action @entity{
+  id: ID!
+  type: String!
+  data: String!
+  timestamp: String!
+}
+
+type Minter @entity {
+  id: ID!
+  contract: String!
   tokenCount: BigInt!
-  saleCount: BigInt!
-  saleVolume: BigDecimal!
-  mediaIcon: String!
-  mediaBanner: String!
-  collectionID: BigInt!
-  tokens: [String!]!
+  collectionCount: BigInt!
 }
 
 type Token @entity {
   id: ID!
-  collection: String!
-  collectionID: BigInt!
   contract: String!
   tokenId: BigInt!
   owner_id: String!
@@ -40,12 +50,40 @@ type Token @entity {
   description: String!
   media: String!
   creator: String!
-  price: BigInt!
-  status: String!
-  adressbidder: String!
-  highestbidder: String!
-  lowestbidder: String!
-  expires_at: String!
-  starts_at: String!
+  price: String!
+  onSale: Boolean!
   extra: String!
+  approvalID: BigInt!
+  collectionID: BigInt!
+  timestamp: BigInt!
 }
+
+type Serie @entity{
+  id: ID!
+  title: String!
+  description: String!
+  media: String!
+  status: String!
+  creator: String!
+  price: String!
+  extra: String!
+  copies: BigInt!
+  collectionID: BigInt!
+  timestamp: BigInt!
+}
+
+type Collection @entity{
+  id: ID!
+  owner_id: String!
+  title: String!
+  description: String!
+  tokenCount: BigInt!
+  salesCount: BigInt!
+  saleVolume: BigDecimal!
+  mediaIcon: String!
+  mediaBanner: String!
+  collectionID: BigInt!
+  timestamp: BigInt!
+}
+
+

@@ -1,5 +1,5 @@
 //Inicializar el subgrafo
-graph init --product hosted-service LuisDaniel2166/NativoJSON
+graph init --product hosted-service LuisDaniel2166/NTV_Mint_Market
 
 //Instalar paqueteria necesaria
 yarn install
@@ -11,4 +11,22 @@ yarn codegen
 graph auth --product hosted-service a5e3fcc5e7264a6cbd6e3cec12183acf
 
 //Comando para realizar el deploy al subgrafo
-graph deploy --product hosted-service LuisDaniel2166/NativoJSON
+graph deploy --product hosted-service LuisDaniel2166/NTV_Mint_Market
+
+
+--Cuenta de cloudmex
+
+//Inicio de sesion de subgraph para hacer el deploy
+graph auth --product hosted-service 343fea5c36b744509802585dfd9006da
+
+//Comando para realizar el deploy al subgrafo
+graph deploy --product hosted-service DevscloudMex/NativoNFT
+
+
+--Grafo de pruebas
+//Comando para realizar el deploy al subgrafo
+graph deploy --product hosted-service LuisDaniel2166/NTV_Mint_Market
+
+--Grafo de testnet
+//Comando para realizar el deploy al subgrafo
+graph deploy --product hosted-service LuisDaniel2166/nativonftv2

@@ -3,19 +3,20 @@ schema:
   file: schema.graphql
 dataSources:
   - kind: near
-    name: NativoTest
+    name: NativoMarket
     network: near-testnet
     source:
-      account: dev-1646411413558-23589508762199
-      startBlock: 84196684
+      account: v2.nativo-market.testnet
+      startBlock: 92383756
     mapping:
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Token
-        - Market
         - Contract
-        - Collections
+        - Bids
+        - Actions
+        - Collection
       receiptHandlers:
         - handler: handleReceipt
-      file: NativoTest/NativoTest.wasm
+      file: NativoMarket/NativoMarket.wasm

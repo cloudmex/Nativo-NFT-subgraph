@@ -1,0 +1,39 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  # - kind: near
+  #   name: NativoMinter
+  #   network: near-testnet
+  #   source:
+  #     account: "hardtest.nativo-minter.testnet"
+  #     startBlock: 88717793
+  #   mapping:
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Token
+  #       - Contract
+  #       - Bids
+  #       - Actions
+  #     receiptHandlers:
+  #       - handler: handleReceipt
+  #     file: ./src/mapping.ts
+  
+  - kind: near
+    name: NativoMarket
+    network: near-mainnet
+    source:
+      account: "nativo-market.near"
+      startBlock: 61565006
+    mapping:
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - Contract
+        - Bids
+        - Actions
+      receiptHandlers:
+        - handler: handleReceipt
+      file: ./src/mapping.ts
