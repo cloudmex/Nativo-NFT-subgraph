@@ -69,7 +69,7 @@ function handleAction(
           case key == 'biography':
             bio = data.entries[i].value.toString()
             break
-          case key == 'socialMedia':
+          case key == 'social_media':
             socMed = data.entries[i].value.toString()
             break
         }
@@ -98,12 +98,12 @@ function handleAction(
         profile.tokBought = BigInt.fromI64(0)
         profile.tokCreated = BigInt.fromI64(0)
         profile.timestamp = BigInt.fromString(blockHeader.timestampNanosec.toString())
+        log.info("se edito el perfil",[])
       }
       profile.biography = bio
       profile.socialMedia = socMed
       profile.media = med
       profile.save()
-      log.info("se edito el perfil",[])
     }
   }
 
@@ -125,16 +125,16 @@ function handleAction(
         let key = data.entries[i].key.toString()
         log.info("key: {}",[key])
         switch(true){
-          case key == 'collectionID':
+          case key == 'collection_id':
             colID = data.entries[i].value.toString()
             break
           case key == 'description':
             desc = data.entries[i].value.toString()
             break
-          case key == 'mediaBanner':
+          case key == 'media_banner':
             medBan = data.entries[i].value.toString()
             break
-          case key == 'mediaIcon':
+          case key == 'media_icon':
             medIcon = data.entries[i].value.toString()
             break
           case key == 'owner_id':
@@ -164,6 +164,7 @@ function handleAction(
     coleccion.saleVolume = BigDecimal.fromString('0')
     coleccion.salesCount = BigInt.fromI32(0)
     coleccion.timestamp = BigInt.fromString(blockHeader.timestampNanosec.toString())
+    coleccion.visibility = true
     minter.collectionCount = minter.collectionCount + BigInt.fromI32(1)
     minter.save()
     coleccion.save()
@@ -229,27 +230,102 @@ function handleAction(
       collection = new Collection(colID)
       collection.collectionID = BigInt.fromString(colID)
     }
-    let token = new Token(tokID)
-    token.contract = cont
-    token.tokenId = BigInt.fromString(tokID)
-    token.owner_id = own
-    token.title = tit
-    token.description = desc
-    token.media = med
-    token.creator = crea
-    token.collectionID = BigInt.fromString(colID)
-    token.price = "0"
-    token.onSale = false
-    token.extra = ""
-    token.approvalID = BigInt.fromI32(0)
-    token.timestamp = BigInt.fromString(blockHeader.timestampNanosec.toString())
-    minter.contract = cont
-    minter.tokenCount = minter.tokenCount + BigInt.fromI32(1)
-    collection.tokenCount = collection.tokenCount + BigInt.fromI32(1)
-    minter.save()
-    token.save()
-    collection.save()
-    log.info("se guardo el token",[])
+    let token = Token.load(tokID)
+    if(token == null){
+      token = new Token(tokID)
+      token.contract = cont
+      token.tokenId = BigInt.fromString(tokID)
+      token.owner_id = own
+      token.title = tit
+      token.description = desc
+      token.media = med
+      token.creator = crea
+      token.collectionID = BigInt.fromString(colID)
+      token.price = "0"
+      token.onSale = false
+      token.extra = ""
+      token.approvalID = BigInt.fromI32(0)
+      token.timestamp = BigInt.fromString(blockHeader.timestampNanosec.toString())
+      minter.contract = cont
+      minter.tokenCount = minter.tokenCount + BigInt.fromI32(1)
+      collection.tokenCount = collection.tokenCount + BigInt.fromI32(1)
+      minter.save()
+      token.save()
+      collection.save()
+      log.info("se guardo el token",[])  
+    }
+    log.info("El token ya esta registrado en una coleccion",[])
+  }
+
+
+  //Editar coleccion
+  if(functionCall.methodName == "edit_collection"){
+    log.info('Entro a crear coleccion',[])
+    // log.info("Log: {}",[outcome.logs[0]])
+    let jsonData = outcome.logs[0]
+    let parsedJSON = json.fromString(jsonData)
+    let colID = ""
+    let desc = ""
+    let medBan = ""
+    let medIcon =""
+    let own = ""
+    let tit = ""
+    let vis = false
+    if(parsedJSON.kind == JSONValueKind.OBJECT){
+      let entry = parsedJSON.toObject()
+      let data = entry.entries[0].value.toObject()
+      for(let i = 0;i < data.entries.length; i++){
+        let key = data.entries[i].key.toString()
+        log.info("key: {}",[key])
+        switch(true){
+          case key == 'collection_id':
+            colID = data.entries[i].value.toString()
+            break
+          case key == 'description':
+            desc = data.entries[i].value.toString()
+            break
+          case key == 'media_banner':
+            medBan = data.entries[i].value.toString()
+            break
+          case key == 'media_icon':
+            medIcon = data.entries[i].value.toString()
+            break
+          case key == 'owner_id':
+            own = data.entries[i].value.toString()
+            break
+          case key == 'title':
+            tit = data.entries[i].value.toString()
+            break
+          case key == 'visibility':
+            vis = data.entries[i].value.toBool()
+            break
+        }
+      }
+    }
+    let coleccion = Collection.load(colID)
+    if(coleccion == null){
+      coleccion = new Collection(colID)
+      coleccion.collectionID = BigInt.fromString(colID)
+      coleccion.owner_id = own
+      coleccion.title = tit
+      coleccion.description = desc
+      coleccion.mediaBanner = medBan
+      coleccion.mediaIcon = medIcon
+      coleccion.tokenCount = BigInt.fromI32(0)
+      coleccion.saleVolume = BigDecimal.fromString('0')
+      coleccion.salesCount = BigInt.fromI32(0)
+      coleccion.timestamp = BigInt.fromString(blockHeader.timestampNanosec.toString())
+    }
+    //let coleccion = new Collection(colID)
+    coleccion.collectionID = BigInt.fromString(colID)
+    coleccion.owner_id = own
+    coleccion.title = tit
+    coleccion.description = desc
+    coleccion.mediaBanner = medBan
+    coleccion.mediaIcon = medIcon
+    coleccion.visibility = vis
+    coleccion.save()
+    log.info("se edito la coleccion",[])
   }
 
   //Preguntar para que es el nft_transfer_payout

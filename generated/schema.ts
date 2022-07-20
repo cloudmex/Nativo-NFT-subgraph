@@ -724,6 +724,7 @@ export class Collection extends Entity {
     this.set("mediaBanner", Value.fromString(""));
     this.set("collectionID", Value.fromBigInt(BigInt.zero()));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("visibility", Value.fromBoolean(false));
   }
 
   save(): void {
@@ -840,5 +841,14 @@ export class Collection extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get visibility(): boolean {
+    let value = this.get("visibility");
+    return value!.toBoolean();
+  }
+
+  set visibility(value: boolean) {
+    this.set("visibility", Value.fromBoolean(value));
   }
 }
