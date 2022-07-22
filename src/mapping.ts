@@ -108,7 +108,7 @@ function handleAction(
   }
 
   if(functionCall.methodName == "add_new_user_collection"){
-    log.info('Entro a crear coleccion',[])
+    log.info('Entro a crear/editar coleccion',[])
     // log.info("Log: {}",[outcome.logs[0]])
     let jsonData = outcome.logs[0]
     let parsedJSON = json.fromString(jsonData)
@@ -118,15 +118,20 @@ function handleAction(
     let medIcon =""
     let own = ""
     let tit = ""
+    let type = ""
+    let id = ""
+    let vis = false
     if(parsedJSON.kind == JSONValueKind.OBJECT){
       let entry = parsedJSON.toObject()
       let data = entry.entries[0].value.toObject()
+      type = entry.entries[1].value.toString()
+      log.info("type: {}",[type])
       for(let i = 0;i < data.entries.length; i++){
         let key = data.entries[i].key.toString()
         log.info("key: {}",[key])
         switch(true){
           case key == 'collection_id':
-            colID = data.entries[i].value.toString()
+            colID = data.entries[i].value.toI64().toString()
             break
           case key == 'description':
             desc = data.entries[i].value.toString()
@@ -143,32 +148,63 @@ function handleAction(
           case key == 'title':
             tit = data.entries[i].value.toString()
             break
+          case key == 'visibility':
+            vis = data.entries[i].value.toBool()
+            break
+          case key == 'id':
+            id = data.entries[i].value.toString()
+            break
         }
       }
     }
-    let minter = Minter.load('Minter')
-    if(minter == null){
-      minter = new Minter('Minter')
-      minter.contract = ""
-      minter.collectionCount = BigInt.fromI32(0)
-      minter.tokenCount = BigInt.fromI32(0)
+    if(type == "create"){
+      log.info('Entro a crear',[])
+      let minter = Minter.load('Minter')
+      if(minter == null){
+        minter = new Minter('Minter')
+        minter.contract = ""
+        minter.collectionCount = BigInt.fromI32(0)
+        minter.tokenCount = BigInt.fromI32(0)
+      }
+      let coleccion = new Collection(colID)
+      coleccion.collectionID = BigInt.fromString(colID)
+      coleccion.owner_id = own
+      coleccion.title = tit
+      coleccion.description = desc
+      coleccion.mediaBanner = medBan
+      coleccion.mediaIcon = medIcon
+      coleccion.tokenCount = BigInt.fromI32(0)
+      coleccion.saleVolume = BigDecimal.fromString('0')
+      coleccion.salesCount = BigInt.fromI32(0)
+      coleccion.timestamp = BigInt.fromString(blockHeader.timestampNanosec.toString())
+      coleccion.visibility = vis
+      minter.collectionCount = minter.collectionCount + BigInt.fromI32(1)
+      minter.save()
+      coleccion.save()
+      log.info("se guardo la coleccion",[])
     }
-    let coleccion = new Collection(colID)
-    coleccion.collectionID = BigInt.fromString(colID)
-    coleccion.owner_id = own
-    coleccion.title = tit
-    coleccion.description = desc
-    coleccion.mediaBanner = medBan
-    coleccion.mediaIcon = medIcon
-    coleccion.tokenCount = BigInt.fromI32(0)
-    coleccion.saleVolume = BigDecimal.fromString('0')
-    coleccion.salesCount = BigInt.fromI32(0)
-    coleccion.timestamp = BigInt.fromString(blockHeader.timestampNanosec.toString())
-    coleccion.visibility = true
-    minter.collectionCount = minter.collectionCount + BigInt.fromI32(1)
-    minter.save()
-    coleccion.save()
-    log.info("se guardo la coleccion",[])
+    else if(type == "edit"){
+      log.info('Entro a editar',[])
+      let coleccion = Collection.load(id)
+      if(coleccion == null){
+        coleccion = new Collection(id)
+        log.info('Se encontro la coleccion',[])
+        coleccion.title = tit
+        coleccion.description = desc
+        coleccion.mediaBanner = medBan
+        coleccion.mediaIcon = medIcon
+        coleccion.visibility = vis
+        log.info("se edito la coleccion",[])
+      }
+      coleccion.title = tit
+      coleccion.description = desc
+      coleccion.mediaBanner = medBan
+      coleccion.mediaIcon = medIcon
+      coleccion.visibility = vis
+      coleccion.save()
+      log.info("se edito la coleccion",[])
+    }
+    
   }
 
   //Agregar un NFT a una coleccion
@@ -192,8 +228,8 @@ function handleAction(
         let key = data.entries[i].key.toString()
         log.info("key: {}",[key])
         switch(true){
-          case key == 'collectionID':
-            colID = data.entries[i].value.toString()
+          case key == 'collection_id':
+            colID = data.entries[i].value.toU64().toString()
             break
           case key == 'contract_id':
             cont = data.entries[i].value.toString()

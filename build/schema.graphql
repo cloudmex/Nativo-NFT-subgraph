@@ -84,6 +84,7 @@ type Collection @entity{
   mediaBanner: String!
   collectionID: BigInt!
   timestamp: BigInt!
+  visibility: Boolean!
 }
 
 

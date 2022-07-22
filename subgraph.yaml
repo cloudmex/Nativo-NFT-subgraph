@@ -24,8 +24,8 @@ dataSources:
     name: NativoMarket
     network: near-testnet
     source:
-      account: "v2.nativo-market.testnet"
-      startBlock: 92383756
+      account: "v4.nativo-market.testnet"
+      startBlock: 95476487
     mapping:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
