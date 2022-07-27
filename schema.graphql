@@ -87,4 +87,12 @@ type Collection @entity{
   visibility: Boolean!
 }
 
+type _Schema_
+  @fulltext(
+    name: "collectionSearch"
+    language: es
+    algorithm: proximityRank
+    include: [{ entity: "Collection", fields: [{ name: "title" }, { name: "owner_id" }] }]
+  )
+
 

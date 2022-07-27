@@ -120,7 +120,7 @@ function handleAction(
     let tit = ""
     let type = ""
     let id = ""
-    let vis = false
+    let vis = true
     if(parsedJSON.kind == JSONValueKind.OBJECT){
       let entry = parsedJSON.toObject()
       let data = entry.entries[0].value.toObject()
