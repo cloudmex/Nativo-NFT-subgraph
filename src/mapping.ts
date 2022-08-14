@@ -119,7 +119,6 @@ function handleAction(
     let own = ""
     let tit = ""
     let type = ""
-    let id = ""
     let vis = true
     if(parsedJSON.kind == JSONValueKind.OBJECT){
       let entry = parsedJSON.toObject()
@@ -150,9 +149,6 @@ function handleAction(
             break
           case key == 'visibility':
             vis = data.entries[i].value.toBool()
-            break
-          case key == 'id':
-            id = data.entries[i].value.toString()
             break
         }
       }
@@ -185,16 +181,16 @@ function handleAction(
     }
     else if(type == "edit"){
       log.info('Entro a editar',[])
-      let coleccion = Collection.load(id)
+      log.info('colID: {}',[colID])
+      let coleccion = Collection.load(colID)
       if(coleccion == null){
-        coleccion = new Collection(id)
-        log.info('Se encontro la coleccion',[])
+        coleccion = new Collection(colID)
+        log.info('No se encontro la coleccion',[])
         coleccion.title = tit
         coleccion.description = desc
         coleccion.mediaBanner = medBan
         coleccion.mediaIcon = medIcon
         coleccion.visibility = vis
-        log.info("se edito la coleccion",[])
       }
       coleccion.title = tit
       coleccion.description = desc
