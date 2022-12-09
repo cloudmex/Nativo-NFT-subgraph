@@ -30,3 +30,6 @@ graph deploy --product hosted-service LuisDaniel2166/NTV_Mint_Market
 --Grafo de testnet
 //Comando para realizar el deploy al subgrafo
 graph deploy --product hosted-service LuisDaniel2166/nativonftv2
+
+--Grafo de eventos testnet
+graph deploy --product hosted-service luisdaniel2166/eventnativo

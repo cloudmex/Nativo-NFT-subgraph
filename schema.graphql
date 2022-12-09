@@ -1,14 +1,3 @@
-type Profile @entity{
-  id: ID!
-  username: String!
-  media: String!
-  biography: String!
-  tokCreated: BigInt!
-  tokBought: BigInt!
-  socialMedia: String!
-  timestamp: BigInt!
-}
-
 type Market @entity{
   id: ID!
   contract: String!
@@ -20,8 +9,8 @@ type Market @entity{
 type Bid @entity {
   id: ID!
   contract: String!
-  tokenId: BigInt!
-  bidder: String!
+  tokenId: Token!
+  bidder: Profile!
   price: BigInt!
   status: String!
   timestamp: BigInt!
@@ -39,6 +28,7 @@ type Minter @entity {
   contract: String!
   tokenCount: BigInt!
   collectionCount: BigInt!
+  profileCount: BigInt!
 }
 
 type Token @entity {
@@ -85,7 +75,10 @@ type Collection @entity{
   collectionID: BigInt!
   timestamp: BigInt!
   visibility: Boolean!
+  twitter: String!
+  website: String!
 }
+
 
 type _Schema_
   @fulltext(
@@ -94,5 +87,26 @@ type _Schema_
     algorithm: proximityRank
     include: [{ entity: "Collection", fields: [{ name: "title" }, { name: "owner_id" }] }]
   )
+
+type Notification @entity{
+  id: ID!
+  event: String!
+  data: String!
+  timestamp: BigInt!
+  owner: Profile!
+}
+
+type Profile @entity{
+  id: ID!
+  username: String!
+  media: String!
+  biography: String!
+  tokCreated: BigInt!
+  tokBought: BigInt!
+  socialMedia: String!
+  timestamp: BigInt!
+  mediaBanner: String!
+}
+
 
 

@@ -11,110 +11,6 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Profile extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("username", Value.fromString(""));
-    this.set("media", Value.fromString(""));
-    this.set("biography", Value.fromString(""));
-    this.set("tokCreated", Value.fromBigInt(BigInt.zero()));
-    this.set("tokBought", Value.fromBigInt(BigInt.zero()));
-    this.set("socialMedia", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Profile entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Profile entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Profile", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Profile | null {
-    return changetype<Profile | null>(store.get("Profile", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get username(): string {
-    let value = this.get("username");
-    return value!.toString();
-  }
-
-  set username(value: string) {
-    this.set("username", Value.fromString(value));
-  }
-
-  get media(): string {
-    let value = this.get("media");
-    return value!.toString();
-  }
-
-  set media(value: string) {
-    this.set("media", Value.fromString(value));
-  }
-
-  get biography(): string {
-    let value = this.get("biography");
-    return value!.toString();
-  }
-
-  set biography(value: string) {
-    this.set("biography", Value.fromString(value));
-  }
-
-  get tokCreated(): BigInt {
-    let value = this.get("tokCreated");
-    return value!.toBigInt();
-  }
-
-  set tokCreated(value: BigInt) {
-    this.set("tokCreated", Value.fromBigInt(value));
-  }
-
-  get tokBought(): BigInt {
-    let value = this.get("tokBought");
-    return value!.toBigInt();
-  }
-
-  set tokBought(value: BigInt) {
-    this.set("tokBought", Value.fromBigInt(value));
-  }
-
-  get socialMedia(): string {
-    let value = this.get("socialMedia");
-    return value!.toString();
-  }
-
-  set socialMedia(value: string) {
-    this.set("socialMedia", Value.fromString(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-}
-
 export class Market extends Entity {
   constructor(id: string) {
     super();
@@ -195,7 +91,7 @@ export class Bid extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("contract", Value.fromString(""));
-    this.set("tokenId", Value.fromBigInt(BigInt.zero()));
+    this.set("tokenId", Value.fromString(""));
     this.set("bidder", Value.fromString(""));
     this.set("price", Value.fromBigInt(BigInt.zero()));
     this.set("status", Value.fromString(""));
@@ -237,13 +133,13 @@ export class Bid extends Entity {
     this.set("contract", Value.fromString(value));
   }
 
-  get tokenId(): BigInt {
+  get tokenId(): string {
     let value = this.get("tokenId");
-    return value!.toBigInt();
+    return value!.toString();
   }
 
-  set tokenId(value: BigInt) {
-    this.set("tokenId", Value.fromBigInt(value));
+  set tokenId(value: string) {
+    this.set("tokenId", Value.fromString(value));
   }
 
   get bidder(): string {
@@ -355,6 +251,7 @@ export class Minter extends Entity {
     this.set("contract", Value.fromString(""));
     this.set("tokenCount", Value.fromBigInt(BigInt.zero()));
     this.set("collectionCount", Value.fromBigInt(BigInt.zero()));
+    this.set("profileCount", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -408,6 +305,15 @@ export class Minter extends Entity {
 
   set collectionCount(value: BigInt) {
     this.set("collectionCount", Value.fromBigInt(value));
+  }
+
+  get profileCount(): BigInt {
+    let value = this.get("profileCount");
+    return value!.toBigInt();
+  }
+
+  set profileCount(value: BigInt) {
+    this.set("profileCount", Value.fromBigInt(value));
   }
 }
 
@@ -725,6 +631,8 @@ export class Collection extends Entity {
     this.set("collectionID", Value.fromBigInt(BigInt.zero()));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
     this.set("visibility", Value.fromBoolean(false));
+    this.set("twitter", Value.fromString(""));
+    this.set("website", Value.fromString(""));
   }
 
   save(): void {
@@ -850,5 +758,211 @@ export class Collection extends Entity {
 
   set visibility(value: boolean) {
     this.set("visibility", Value.fromBoolean(value));
+  }
+
+  get twitter(): string {
+    let value = this.get("twitter");
+    return value!.toString();
+  }
+
+  set twitter(value: string) {
+    this.set("twitter", Value.fromString(value));
+  }
+
+  get website(): string {
+    let value = this.get("website");
+    return value!.toString();
+  }
+
+  set website(value: string) {
+    this.set("website", Value.fromString(value));
+  }
+}
+
+export class Notification extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("event", Value.fromString(""));
+    this.set("data", Value.fromString(""));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("owner", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Notification entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Notification entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Notification", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Notification | null {
+    return changetype<Notification | null>(store.get("Notification", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event(): string {
+    let value = this.get("event");
+    return value!.toString();
+  }
+
+  set event(value: string) {
+    this.set("event", Value.fromString(value));
+  }
+
+  get data(): string {
+    let value = this.get("data");
+    return value!.toString();
+  }
+
+  set data(value: string) {
+    this.set("data", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+}
+
+export class Profile extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("username", Value.fromString(""));
+    this.set("media", Value.fromString(""));
+    this.set("biography", Value.fromString(""));
+    this.set("tokCreated", Value.fromBigInt(BigInt.zero()));
+    this.set("tokBought", Value.fromBigInt(BigInt.zero()));
+    this.set("socialMedia", Value.fromString(""));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("mediaBanner", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Profile entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Profile entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Profile", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Profile | null {
+    return changetype<Profile | null>(store.get("Profile", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get username(): string {
+    let value = this.get("username");
+    return value!.toString();
+  }
+
+  set username(value: string) {
+    this.set("username", Value.fromString(value));
+  }
+
+  get media(): string {
+    let value = this.get("media");
+    return value!.toString();
+  }
+
+  set media(value: string) {
+    this.set("media", Value.fromString(value));
+  }
+
+  get biography(): string {
+    let value = this.get("biography");
+    return value!.toString();
+  }
+
+  set biography(value: string) {
+    this.set("biography", Value.fromString(value));
+  }
+
+  get tokCreated(): BigInt {
+    let value = this.get("tokCreated");
+    return value!.toBigInt();
+  }
+
+  set tokCreated(value: BigInt) {
+    this.set("tokCreated", Value.fromBigInt(value));
+  }
+
+  get tokBought(): BigInt {
+    let value = this.get("tokBought");
+    return value!.toBigInt();
+  }
+
+  set tokBought(value: BigInt) {
+    this.set("tokBought", Value.fromBigInt(value));
+  }
+
+  get socialMedia(): string {
+    let value = this.get("socialMedia");
+    return value!.toString();
+  }
+
+  set socialMedia(value: string) {
+    this.set("socialMedia", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get mediaBanner(): string {
+    let value = this.get("mediaBanner");
+    return value!.toString();
+  }
+
+  set mediaBanner(value: string) {
+    this.set("mediaBanner", Value.fromString(value));
   }
 }

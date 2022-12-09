@@ -1,4 +1,6 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
+features:
+  - fullTextSearch
 schema:
   file: ./schema.graphql
 dataSources:
@@ -24,8 +26,53 @@ dataSources:
     name: NativoMarket
     network: near-testnet
     source:
-      account: "v2.nativo-market.testnet"
-      startBlock: 91820556
+      account: "v4.nativo-market.testnet"
+      startBlock: 97163614
+    mapping:
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - Contract
+        - Bids
+        - Actions
+        - Collection
+      receiptHandlers:
+        - handler: handleReceipt
+      file: ./src/mapping.ts
+
+
+//Testnet new
+specVersion: 0.0.4
+features:
+  - fullTextSearch
+schema:
+  file: ./schema.graphql
+dataSources:
+  # - kind: near
+  #   name: NativoMinter
+  #   network: near-testnet
+  #   source:
+  #     account: "minterv2.nativo-minter.testnet"
+  #     startBlock: 102441532
+  #   mapping:
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Token
+  #       - Contract
+  #       - Bids
+  #       - Actions
+  #     receiptHandlers:
+  #       - handler: handleReceipt
+  #     file: ./src/mapping.ts
+  
+  - kind: near
+    name: NativoMarket
+    network: near-testnet
+    source:
+      account: "v4.nativo-market.testnet"
+      startBlock: 102441532
     mapping:
       apiVersion: 0.0.6
       language: wasm/assemblyscript

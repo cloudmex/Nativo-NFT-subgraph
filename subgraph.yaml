@@ -24,10 +24,10 @@ dataSources:
   
   - kind: near
     name: NativoMarket
-    network: near-testnet
+    network: near-mainnet
     source:
-      account: "v4.nativo-market.testnet"
-      startBlock: 97163614
+      account: "nativo-mkt.near"
+      startBlock: 68722002
     mapping:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
