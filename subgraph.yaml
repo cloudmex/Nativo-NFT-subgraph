@@ -8,8 +8,8 @@ dataSources:
   #   name: NativoMinter
   #   network: near-testnet
   #   source:
-  #     account: "hardtest.nativo-minter.testnet"
-  #     startBlock: 88717793
+  #     account: "minterv2.nativo-minter.testnet"
+  #     startBlock: 102441532
   #   mapping:
   #     apiVersion: 0.0.6
   #     language: wasm/assemblyscript
@@ -24,10 +24,10 @@ dataSources:
   
   - kind: near
     name: NativoMarket
-    network: near-mainnet
+    network: near-testnet
     source:
-      account: "nativo-mkt.near"
-      startBlock: 68722002
+      account: "v4.nativo-market.testnet"
+      startBlock: 111707849
     mapping:
       apiVersion: 0.0.6
       language: wasm/assemblyscript

@@ -367,6 +367,7 @@ function handleAction(
       token.description = desc
       token.media = med
       token.creator = crea
+      token.creatorId = crea
       token.collectionID = BigInt.fromString(colID)
       token.price = "0"
       token.onSale = false

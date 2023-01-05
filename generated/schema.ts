@@ -317,170 +317,6 @@ export class Minter extends Entity {
   }
 }
 
-export class Token extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("contract", Value.fromString(""));
-    this.set("tokenId", Value.fromBigInt(BigInt.zero()));
-    this.set("owner_id", Value.fromString(""));
-    this.set("title", Value.fromString(""));
-    this.set("description", Value.fromString(""));
-    this.set("media", Value.fromString(""));
-    this.set("creator", Value.fromString(""));
-    this.set("price", Value.fromString(""));
-    this.set("onSale", Value.fromBoolean(false));
-    this.set("extra", Value.fromString(""));
-    this.set("approvalID", Value.fromBigInt(BigInt.zero()));
-    this.set("collectionID", Value.fromBigInt(BigInt.zero()));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Token entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Token entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Token", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Token | null {
-    return changetype<Token | null>(store.get("Token", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get contract(): string {
-    let value = this.get("contract");
-    return value!.toString();
-  }
-
-  set contract(value: string) {
-    this.set("contract", Value.fromString(value));
-  }
-
-  get tokenId(): BigInt {
-    let value = this.get("tokenId");
-    return value!.toBigInt();
-  }
-
-  set tokenId(value: BigInt) {
-    this.set("tokenId", Value.fromBigInt(value));
-  }
-
-  get owner_id(): string {
-    let value = this.get("owner_id");
-    return value!.toString();
-  }
-
-  set owner_id(value: string) {
-    this.set("owner_id", Value.fromString(value));
-  }
-
-  get title(): string {
-    let value = this.get("title");
-    return value!.toString();
-  }
-
-  set title(value: string) {
-    this.set("title", Value.fromString(value));
-  }
-
-  get description(): string {
-    let value = this.get("description");
-    return value!.toString();
-  }
-
-  set description(value: string) {
-    this.set("description", Value.fromString(value));
-  }
-
-  get media(): string {
-    let value = this.get("media");
-    return value!.toString();
-  }
-
-  set media(value: string) {
-    this.set("media", Value.fromString(value));
-  }
-
-  get creator(): string {
-    let value = this.get("creator");
-    return value!.toString();
-  }
-
-  set creator(value: string) {
-    this.set("creator", Value.fromString(value));
-  }
-
-  get price(): string {
-    let value = this.get("price");
-    return value!.toString();
-  }
-
-  set price(value: string) {
-    this.set("price", Value.fromString(value));
-  }
-
-  get onSale(): boolean {
-    let value = this.get("onSale");
-    return value!.toBoolean();
-  }
-
-  set onSale(value: boolean) {
-    this.set("onSale", Value.fromBoolean(value));
-  }
-
-  get extra(): string {
-    let value = this.get("extra");
-    return value!.toString();
-  }
-
-  set extra(value: string) {
-    this.set("extra", Value.fromString(value));
-  }
-
-  get approvalID(): BigInt {
-    let value = this.get("approvalID");
-    return value!.toBigInt();
-  }
-
-  set approvalID(value: BigInt) {
-    this.set("approvalID", Value.fromBigInt(value));
-  }
-
-  get collectionID(): BigInt {
-    let value = this.get("collectionID");
-    return value!.toBigInt();
-  }
-
-  set collectionID(value: BigInt) {
-    this.set("collectionID", Value.fromBigInt(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-}
-
 export class Serie extends Entity {
   constructor(id: string) {
     super();
@@ -866,6 +702,9 @@ export class Profile extends Entity {
     this.set("socialMedia", Value.fromString(""));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
     this.set("mediaBanner", Value.fromString(""));
+    this.set("colCount", Value.fromBigInt(BigInt.zero()));
+    this.set("tokOnSaleCount", Value.fromBigInt(BigInt.zero()));
+    this.set("tokSoldCount", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -964,5 +803,215 @@ export class Profile extends Entity {
 
   set mediaBanner(value: string) {
     this.set("mediaBanner", Value.fromString(value));
+  }
+
+  get colCount(): BigInt {
+    let value = this.get("colCount");
+    return value!.toBigInt();
+  }
+
+  set colCount(value: BigInt) {
+    this.set("colCount", Value.fromBigInt(value));
+  }
+
+  get tokOnSaleCount(): BigInt {
+    let value = this.get("tokOnSaleCount");
+    return value!.toBigInt();
+  }
+
+  set tokOnSaleCount(value: BigInt) {
+    this.set("tokOnSaleCount", Value.fromBigInt(value));
+  }
+
+  get tokSoldCount(): BigInt {
+    let value = this.get("tokSoldCount");
+    return value!.toBigInt();
+  }
+
+  set tokSoldCount(value: BigInt) {
+    this.set("tokSoldCount", Value.fromBigInt(value));
+  }
+
+  get tokensCreated(): Array<string> {
+    let value = this.get("tokensCreated");
+    return value!.toStringArray();
+  }
+
+  set tokensCreated(value: Array<string>) {
+    this.set("tokensCreated", Value.fromStringArray(value));
+  }
+}
+
+export class Token extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("contract", Value.fromString(""));
+    this.set("tokenId", Value.fromBigInt(BigInt.zero()));
+    this.set("owner_id", Value.fromString(""));
+    this.set("title", Value.fromString(""));
+    this.set("description", Value.fromString(""));
+    this.set("media", Value.fromString(""));
+    this.set("creator", Value.fromString(""));
+    this.set("creatorId", Value.fromString(""));
+    this.set("price", Value.fromString(""));
+    this.set("onSale", Value.fromBoolean(false));
+    this.set("extra", Value.fromString(""));
+    this.set("approvalID", Value.fromBigInt(BigInt.zero()));
+    this.set("collectionID", Value.fromBigInt(BigInt.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Token entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Token entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Token", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Token | null {
+    return changetype<Token | null>(store.get("Token", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get contract(): string {
+    let value = this.get("contract");
+    return value!.toString();
+  }
+
+  set contract(value: string) {
+    this.set("contract", Value.fromString(value));
+  }
+
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value!.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
+  }
+
+  get owner_id(): string {
+    let value = this.get("owner_id");
+    return value!.toString();
+  }
+
+  set owner_id(value: string) {
+    this.set("owner_id", Value.fromString(value));
+  }
+
+  get title(): string {
+    let value = this.get("title");
+    return value!.toString();
+  }
+
+  set title(value: string) {
+    this.set("title", Value.fromString(value));
+  }
+
+  get description(): string {
+    let value = this.get("description");
+    return value!.toString();
+  }
+
+  set description(value: string) {
+    this.set("description", Value.fromString(value));
+  }
+
+  get media(): string {
+    let value = this.get("media");
+    return value!.toString();
+  }
+
+  set media(value: string) {
+    this.set("media", Value.fromString(value));
+  }
+
+  get creator(): string {
+    let value = this.get("creator");
+    return value!.toString();
+  }
+
+  set creator(value: string) {
+    this.set("creator", Value.fromString(value));
+  }
+
+  get creatorId(): string {
+    let value = this.get("creatorId");
+    return value!.toString();
+  }
+
+  set creatorId(value: string) {
+    this.set("creatorId", Value.fromString(value));
+  }
+
+  get price(): string {
+    let value = this.get("price");
+    return value!.toString();
+  }
+
+  set price(value: string) {
+    this.set("price", Value.fromString(value));
+  }
+
+  get onSale(): boolean {
+    let value = this.get("onSale");
+    return value!.toBoolean();
+  }
+
+  set onSale(value: boolean) {
+    this.set("onSale", Value.fromBoolean(value));
+  }
+
+  get extra(): string {
+    let value = this.get("extra");
+    return value!.toString();
+  }
+
+  set extra(value: string) {
+    this.set("extra", Value.fromString(value));
+  }
+
+  get approvalID(): BigInt {
+    let value = this.get("approvalID");
+    return value!.toBigInt();
+  }
+
+  set approvalID(value: BigInt) {
+    this.set("approvalID", Value.fromBigInt(value));
+  }
+
+  get collectionID(): BigInt {
+    let value = this.get("collectionID");
+    return value!.toBigInt();
+  }
+
+  set collectionID(value: BigInt) {
+    this.set("collectionID", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 }
