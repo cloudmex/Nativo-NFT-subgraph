@@ -74,7 +74,6 @@ function handleAction(
   }
 
   if(functionCall.methodName == "add_new_profile"){
-    log.info('Entro a info_perfil',[])
     log.info("Log: {}",[outcome.logs[0]])
     let jsonData = outcome.logs[0]
     let parsedJSON = json.fromString(jsonData)
@@ -90,6 +89,7 @@ function handleAction(
       type = entry.entries[1].value.toString()
       for(let i = 0;i < data.entries.length; i++){
         let key = data.entries[i].key.toString()
+        log.info("Key: {}  Data: {}",[key,data.entries[i].value.toString()])
         switch(true){
           case key == 'username':
             acc = data.entries[i].value.toString()
@@ -104,7 +104,7 @@ function handleAction(
             socMed = data.entries[i].value.toString()
             break
           case key == 'media_banner':
-            medBan == data.entries[i].value.toString()
+            medBan = data.entries[i].value.toString()
         }
       }
     }
@@ -128,6 +128,7 @@ function handleAction(
         profile.tokBought = BigInt.fromI64(0)
         profile.tokCreated = BigInt.fromI64(0)
         profile.timestamp = BigInt.fromString(blockHeader.timestampNanosec.toString())
+        log.info('mediaBanner {}',[medBan])
         minter.profileCount = minter.profileCount + BigInt.fromI32(1)
         profile.save()
         minter.save()
@@ -138,6 +139,7 @@ function handleAction(
     if(type == "edit"){
       let profile = Profile.load(acc)
       if(profile==null){
+        log.info('mediaBanner {}',[medBan])
         profile = new Profile(acc)
         profile.username = acc
         profile.biography = bio
@@ -152,6 +154,8 @@ function handleAction(
       profile.biography = bio
       profile.socialMedia = socMed
       profile.media = med
+      profile.mediaBanner = medBan
+      log.info('mediaBanner {}',[medBan])
       profile.save()
     }
   }

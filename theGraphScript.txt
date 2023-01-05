@@ -25,11 +25,11 @@ graph deploy --product hosted-service DevscloudMex/NativoNFT
 
 --Grafo de pruebas
 //Comando para realizar el deploy al subgrafo
-graph deploy --product hosted-service LuisDaniel2166/NTV_Mint_Market
+graph deploy --product hosted-service luisdaniel2166/ntv_mint_market
 
 --Grafo de testnet
 //Comando para realizar el deploy al subgrafo
-graph deploy --product hosted-service LuisDaniel2166/nativonftv2
+graph deploy --product hosted-service luisdaniel2166/nativonftv2
 
 --Grafo de eventos testnet
 graph deploy --product hosted-service luisdaniel2166/eventnativo
